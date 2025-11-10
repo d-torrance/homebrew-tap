@@ -1,0 +1,30 @@
+name: Install brew package
+on: push
+
+jobs:
+  install:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-14
+          - macos-15
+    steps:
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@main
+
+      - name: Set up tap
+        run: |
+          brew untap d-torrance/tap || true
+          brew tap Macaulay2/tap
+
+      - name: Install Macaulay2
+        run: brew install M2
+
+      - name: Test Macaulay2
+        run: |
+          M2 --check 1
+          M2 --check 2
+          M2 --check 3
