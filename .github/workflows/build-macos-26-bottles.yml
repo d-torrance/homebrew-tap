@@ -1,0 +1,21 @@
+name: bottle-deps
+on: push
+
+jobs:
+  bottle-dependencies:
+    runs-on: macos-26
+
+    env:
+      HOMEBREW_NO_INSTALL_FROM_API: 1
+      HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+
+      - name: Build bottles
+        run: |
+          brew install --build-bottle macaulay2
+          brew bottle formula
