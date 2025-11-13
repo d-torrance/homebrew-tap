@@ -17,5 +17,10 @@ jobs:
 
       - name: Build bottles
         run: |
-          brew install --build-bottle macaulay2
-          brew bottle formula
+          brew install --build-bottle factory
+          brew bottle factory
+
+      - uses: actions/upload-artifact@v4
+        with:
+          path: |
+            *.bottle.tar.gz
