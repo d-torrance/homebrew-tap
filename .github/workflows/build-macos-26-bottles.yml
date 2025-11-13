@@ -17,8 +17,8 @@ jobs:
 
       - name: Build bottles
         run: |
-          brew install --build-bottle factory
-          brew bottle factory
+          brew tap Macaulay2/tap
+          brew install --verbose --build-bottle dtorrance/tap/normaliz
 
       - uses: actions/upload-artifact@v4
         with:
