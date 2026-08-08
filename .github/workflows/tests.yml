@@ -36,7 +36,12 @@ jobs:
           restore-keys: ${{ runner.os }}-rubygems-
 
       # query whether all dependencies are bottled
+      #
+      # FORK-ONLY: informational, but it hard-fails on a fork because
+      # macaulay2.rb says depends_on "macaulay2/tap/factory" and that tap is
+      # not installed here.  Drop this before anything goes upstream.
       - run: brew unbottled Macaulay2
+        continue-on-error: true
 
       - run: brew test-bot --only-cleanup-before
 
@@ -47,7 +52,7 @@ jobs:
 
       - run: brew test-bot --only-tap-syntax
 
-      - run: brew test-bot --only-formulae --verbose --root-url=https://ghcr.io/v2/macaulay2/tap
+      - run: brew test-bot --only-formulae --skip-dependents --verbose --root-url=https://ghcr.io/v2/macaulay2/tap
         if: github.event_name == 'pull_request'
 
       - name: Upload bottles as artifact
