@@ -230,9 +230,19 @@ jobs:
           # does.  The --build-bottle tree still has literal /usr/local paths
           # in it, so testing it directly would not catch relocation damage --
           # and pouring is also what runs post_install.
-          brew bottle --merge --write --no-commit --no-all-checks --keep-old ./*.bottle.json
+          brew bottle --merge --write --no-commit --no-all-checks --keep-old \
+            ./"${DISPATCH_BUILD_BOTTLE_FORMULA}"--*.bottle.json
+
+          # Note the tarball carries the rebuild number and the JSON tab does
+          # not, so this glob needs the extra "*": the file is called
+          # <name>--<version>.<tag>.bottle.<rebuild>.tar.gz.
+          bottle=$(ls ./"${DISPATCH_BUILD_BOTTLE_FORMULA}"--*.bottle*.tar.gz)
+
           brew uninstall --formula --force --ignore-dependencies "${DISPATCH_BUILD_BOTTLE_FORMULA}"
-          brew install --formula ./*.bottle.tar.gz
+          # "brew uninstall" autoremoves the dependencies it just orphaned, so
+          # put them back before pouring, as test-bot does.
+          brew install --only-dependencies "$bottle"
+          brew install "$bottle"
           brew linkage --test "${DISPATCH_BUILD_BOTTLE_FORMULA}"
           brew test --verbose "${DISPATCH_BUILD_BOTTLE_FORMULA}"
 
