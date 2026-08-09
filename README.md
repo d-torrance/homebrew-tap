@@ -68,3 +68,5 @@ For issues concerning Macaulay2 itself, file an issue on the
 If the problem is specific to this build, please open an issue here and include the output of `brew config` and `brew doctor`. You can also try visiting the [wiki](https://github.com/Macaulay2/homebrew-tap/wiki) for debugging information and workarounds for common problems.
 
 [^*]: in [Homebrew terminology](https://docs.brew.sh/Formula-Cookbook#homebrew-terminology), instructions for building programs from source are called _formulae_, the resulting packages are _bottles_, and the depository for distributed packages is a _tap_.
+
+<!-- fork test: a change that touches no formula -->
